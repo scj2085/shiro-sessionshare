@@ -1,0 +1,12 @@
+#默认主配置，每个环境都加载
+dubbo:
+  application:
+    name: shiro-sessionshare #应用名称
+server:
+  port: 2222
+  context-path: /account
+spring: 
+  profiles: 
+    active: dev #生产环境
+logging:
+  path: /gomeo2o/logs/${dubbo.application.name} #输出到磁盘目录

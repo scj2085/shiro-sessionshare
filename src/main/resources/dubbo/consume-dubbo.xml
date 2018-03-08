@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://code.alibabatech.com/schema/dubbo  
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">  
+  
+    <!-- name： 服务应用名称 -->  
+    <dubbo:application name="${dubbo.application.name}" logger="slf4j"/>  
+    <!-- 多注册中心配置 -->
+    <!-- protocol：注册中心类型，address：注册中心暴露服务地址 -->  
+   	<dubbo:registry id="productZK" protocol="${dubbo.registry.protocol}" address="${dubbo.registry.product_address}" />    	
+	<!-- 调用提供方接口 ，mock只在出现非业务异常(比如超时，网络异常等)时执行，服务降级使用，和API同一目录，命名方式：接口名+mock,接口请求时间不同，应根据业务分开-->
+    
+    <dubbo:reference  id="companyUpdateService" interface="com.gome.meidian.companyapi.service.CompanyUpdateService" check="false" timeout="10000"  registry="productZK"/>
+    <dubbo:reference  id="companyFindService" interface="com.gome.meidian.companyapi.service.CompanyFindService" check="false" timeout="10000"  registry="productZK"/>
+   
+	
+</beans> 

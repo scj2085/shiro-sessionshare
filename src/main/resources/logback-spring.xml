@@ -1,0 +1,412 @@
+<?xml version="1.0"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	<!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+	<!-- 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender"> -->
+	<!-- 		<encoder> -->
+	<!-- 			<pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger => %msg%n</pattern> -->
+	<!-- 		</encoder> -->
+	<!-- 	</appender> -->
+	
+	<!-- 开发环境 -->
+	<springProfile name="dev">
+		<!-- 系统日志文件输出 -->
+		<appender name="file"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<!-- 临时保存日志文件 -->
+			<File>${LOG_PATH}/meidian-system.log</File>
+			<!-- 日志记录器的滚动策略，按日期 -->
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!-- 归档日志文件 -->
+				<FileNamePattern>${LOG_PATH}/meidian-system.%d{yyyy-MM-dd}.log</FileNamePattern>
+				<!-- 保留一天 -->
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<!-- 日志文件的格式 -->
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+	
+		<!-- 操作记录日志文件,警告 -->
+		<appender name="file-operation"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-operation.log</File>
+	        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	            <level>WARN</level>
+	            <onMatch>ACCEPT</onMatch>
+	            <onMismatch>DENY</onMismatch>
+	        </filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>${LOG_PATH}/meidian-operation.%d{yyyy-MM-dd}.log</FileNamePattern>
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		
+		<!-- 操作记录日志文件，error -->
+		<appender name="file-error"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-error.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>ERROR</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>${LOG_PATH}/meidian-error.%d{yyyy-MM-dd}.log</FileNamePattern>
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+	
+		<!-- 操作记录日志文件，debug -->
+		<appender name="file-debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-debug.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>DEBUG</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/meidian-debug.%d{yyyy-MM-dd}.log</fileNamePattern>
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		
+		<!-- 操作记录日志文件，info -->
+		<appender name="file-msg" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-msg.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>INFO</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/meidian-msg.%d{yyyy-MM-dd}.log</fileNamePattern>
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>%msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		<!-- 定制日志级别，优先级高 -->
+		<logger name="org.springframework.core" level="info"/>
+		<logger name="org.springframework.beans" level="info"/>
+		<logger name="org.springframework.context" level="info"/>
+		<logger name="org.springframework.web" level="info"/>
+		<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG"/>
+		<logger name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor" level="DEBUG"/>
+		<logger name="org.springframework.boot" level="info" />
+		<logger name="org.springframework.aop" level="info" />
+		<logger name="org.springframework.jmx" level="info" />
+		<logger name="org.springframework.jdbc" level="info" />
+		<logger name="org.springframework.transaction" level="info" />
+		<logger name="ch.qos.logback" level="ERROR" />
+		<logger name="org.activiti" level="info" />
+		<logger name="org.hibernate.validator" level="info" />
+		<logger name="org.apache.shiro" level="info"/>
+		<logger name="org.apache.ibatis" level="info"/>
+		<logger name="org.mybatis" level="info"/>
+		
+		<logger name="com.alibaba.dubbo" level="info"/>
+		<logger name="org.apache.zookeeper" level="info"/>
+		<logger name="com.gome.meidian.shopowner" level="debug"/>
+		
+		<!-- 日志级别 -->
+		<root level="info">
+			<!-- <appender-ref ref="console" /> -->
+			<appender-ref ref="file" />
+			<appender-ref ref="file-debug" />
+			<appender-ref ref="file-msg" />
+	        <appender-ref ref="file-error" />
+	        <appender-ref ref="file-operation" />
+		</root>
+	</springProfile>
+	
+	<!-- 测试环境 -->
+	<springProfile name="test">
+		<!-- 系统日志文件输出 -->
+		<appender name="file"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<!-- 临时保存日志文件 -->
+			<File>${LOG_PATH}/meidian-system.log</File>
+			<!-- 日志记录器的滚动策略，按日期 -->
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!-- 归档日志文件 -->
+				<FileNamePattern>${LOG_PATH}/meidian-system.%d{yyyy-MM-dd}.log</FileNamePattern>
+				<!-- 保留一天 -->
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<!-- 日志文件的格式 -->
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+	
+		<!-- 操作记录日志文件,警告 -->
+		<appender name="file-operation"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-operation.log</File>
+	        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	            <level>WARN</level>
+	            <onMatch>ACCEPT</onMatch>
+	            <onMismatch>DENY</onMismatch>
+	        </filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>${LOG_PATH}/meidian-operation.%d{yyyy-MM-dd}.log</FileNamePattern>
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		
+		<!-- 操作记录日志文件，error -->
+		<appender name="file-error"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-error.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>ERROR</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>${LOG_PATH}/meidian-error.%d{yyyy-MM-dd}.log</FileNamePattern>
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+	
+		<!-- 操作记录日志文件，debug -->
+		<appender name="file-debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-debug.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>DEBUG</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/meidian-debug.%d{yyyy-MM-dd}.log</fileNamePattern>
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		
+		<!-- 操作记录日志文件，info -->
+		<appender name="file-msg" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-msg.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>INFO</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/meidian-msg.%d{yyyy-MM-dd}.log</fileNamePattern>
+				<maxHistory>1</maxHistory>
+			</rollingPolicy>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>%msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		<!-- 定制日志级别，优先级高 -->
+		<logger name="org.springframework.core" level="info"/>
+		<logger name="org.springframework.beans" level="info"/>
+		<logger name="org.springframework.context" level="info"/>
+		<logger name="org.springframework.web" level="info"/>
+		<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG"/>
+		<logger name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor" level="DEBUG"/>
+		<logger name="org.springframework.boot" level="info" />
+		<logger name="org.springframework.aop" level="info" />
+		<logger name="org.springframework.jmx" level="info" />
+		<logger name="org.springframework.jdbc" level="info" />
+		<logger name="org.springframework.transaction" level="info" />
+		<logger name="ch.qos.logback" level="ERROR" />
+		<logger name="org.activiti" level="info" />
+		<logger name="org.hibernate.validator" level="info" />
+		<logger name="org.apache.shiro" level="info"/>
+		<logger name="org.apache.ibatis" level="info"/>
+		<logger name="org.mybatis" level="info"/>
+		
+		<logger name="com.alibaba.dubbo" level="info"/>
+		<logger name="org.apache.zookeeper" level="info"/>
+		<logger name="com.gome.meidian.shopowner" level="info"/>
+		
+		<!-- 日志级别 -->
+		<root level="info">
+			<!-- <appender-ref ref="console" /> -->
+			<appender-ref ref="file" />
+			<appender-ref ref="file-debug" />
+			<appender-ref ref="file-msg" />
+	        <appender-ref ref="file-error" />
+	        <appender-ref ref="file-operation" />
+		</root>
+	</springProfile>
+	
+	<!-- 生产环境 -->
+	<springProfile name="product">
+		<!-- 系统日志文件输出 -->
+		<appender name="file"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<!-- 临时保存文件 -->
+			<File>${LOG_PATH}/meidian-system.log</File>
+			<!-- 日志记录器的滚动策略，按日期 -->
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!-- 归档文件 -->
+				<FileNamePattern>${LOG_PATH}/meidian-system.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+				<!-- 除按日志记录之外，还配置了日志文件不能超过200M，若超过200M，日志文件会以索引0开始，命名日志文件，例如log-error-2013-12-21.0.log -->
+	            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>200MB</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+			</rollingPolicy>
+			<!-- 追加方式记录日志 -->
+			<append>true</append>
+			<!-- 日志文件的格式 -->
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+	
+		<!-- 操作记录日志文件,警告 -->
+		<appender name="file-operation"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-operation.log</File>
+	        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	            <level>WARN</level>
+	            <onMatch>ACCEPT</onMatch>
+	            <onMismatch>DENY</onMismatch>
+	        </filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>${LOG_PATH}/meidian-operation.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+	            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>200MB</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+			</rollingPolicy>
+			<append>true</append>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		
+		<!-- 操作记录日志文件，error -->
+		<appender name="file-error"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-error.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>ERROR</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>${LOG_PATH}/meidian-error.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+	            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>200MB</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+			</rollingPolicy>
+			
+			<append>true</append>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+	
+		<!-- 操作记录日志文件，debug -->
+		<appender name="file-debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-debug.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>DEBUG</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/meidian-debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+				<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>200MB</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+			</rollingPolicy>
+			<append>true</append>
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>[%-5level] [%thread] %X{client} %X{trace_id} %d{HH:mm:ss} %logger{36} => %msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		
+		<!-- 操作记录日志文件，info -->
+		<appender name="file-msg" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<File>${LOG_PATH}/meidian-msg.log</File>
+			<filter class="ch.qos.logback.classic.filter.LevelFilter">
+				<level>INFO</level>
+				<onMatch>ACCEPT</onMatch>
+				<onMismatch>DENY</onMismatch>
+			</filter>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${LOG_PATH}/meidian-msg.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+	            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>200MB</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+			</rollingPolicy>
+	        <append>true</append>
+	        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>%msg%n</pattern>
+	            <charset>utf-8</charset>
+	        </encoder>
+		</appender>
+		<!-- 定制日志级别，优先级高 -->
+		<logger name="org.springframework.core" level="info"/>
+		<logger name="org.springframework.beans" level="info"/>
+		<logger name="org.springframework.context" level="info"/>
+		<logger name="org.springframework.web" level="info"/>
+		<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG"/>
+		<logger name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor" level="DEBUG"/>
+		<logger name="org.springframework.boot" level="info" />
+		<logger name="org.springframework.aop" level="info" />
+		<logger name="org.springframework.jmx" level="info" />
+		<logger name="org.springframework.jdbc" level="info" />
+		<logger name="org.springframework.transaction" level="info" />
+		<logger name="ch.qos.logback" level="ERROR" />
+		<logger name="org.activiti" level="info" />
+		<logger name="org.hibernate.validator" level="info" />
+		<logger name="org.apache.shiro" level="info"/>
+		<logger name="org.apache.ibatis" level="info"/>
+		<logger name="org.mybatis" level="info"/>
+		
+		<logger name="com.alibaba.dubbo" level="info"/>
+		<logger name="org.apache.zookeeper" level="info"/>
+		<logger name="com.gome.meidian.shopowner" level="info"/>
+		
+		<!-- 日志级别 -->
+		<root level="error">
+			<!-- <appender-ref ref="console" /> -->
+			<appender-ref ref="file" />
+			<appender-ref ref="file-debug" />
+			<appender-ref ref="file-msg" />
+	        <appender-ref ref="file-error" />
+	        <appender-ref ref="file-operation" />
+		</root>
+	</springProfile>
+
+</configuration>
